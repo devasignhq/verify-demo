@@ -15,7 +15,7 @@ describe("orderTotal", () => {
   });
 
   it("handles an empty order", () => {
-    expect(orderTotal([])).toEqual({ subtotalCents: 0, taxCents: 0, refundsCents: 0, totalCents: 0 });
+    expect(orderTotal([])).toEqual({ subtotalCents: 0, taxCents: 0, refundCents: 0, totalCents: 0 });
   });
 });
 
