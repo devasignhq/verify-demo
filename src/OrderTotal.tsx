@@ -14,8 +14,12 @@ export function OrderTotal({ customer, totals }: OrderTotalProps) {
         <dd data-testid="subtotal">{formatCents(totals.subtotalCents)}</dd>
         <dt>Tax</dt>
         <dd data-testid="tax">{formatCents(totals.taxCents)}</dd>
-        <dt>Refunds</dt>
-        <dd data-testid="refunds">{formatCents(0)}</dd>
+        {totals.refundsCents > 0 && (
+          <>
+            <dt>Refunds</dt>
+            <dd data-testid="refunds">{formatCents(totals.refundsCents)}</dd>
+          </>
+        )}
         <dt>Total</dt>
         <dd data-testid="total">{formatCents(totals.totalCents)}</dd>
       </dl>
