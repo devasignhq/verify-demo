@@ -8,16 +8,19 @@ export type LineItem = {
 export type OrderTotal = {
   subtotalCents: number;
   taxCents: number;
+  refundCents: number;
   totalCents: number;
 };
 
 export const TAX_RATE = 0.08;
 
-/** Sum of the order's line items, plus tax. */
+/** Sum of the order's charged line items, plus tax. Refunded items are excluded. */
 export function orderTotal(items: LineItem[]): OrderTotal {
-  const subtotalCents = items.reduce((sum, item) => sum + item.amountCents, 0);
+  const charged = items.filter((item) => !item.refunded);
+  const subtotalCents = charged.reduce((sum, item) => sum + item.amountCents, 0);
+  const refundCents = items.filter((item) => item.refunded).reduce((sum, item) => sum + item.amountCents, 0);
   const taxCents = Math.round(subtotalCents * TAX_RATE);
-  return { subtotalCents, taxCents, totalCents: subtotalCents + taxCents };
+  return { subtotalCents, taxCents, refundCents, totalCents: subtotalCents + taxCents };
 }
 
 export function formatCents(cents: number): string {

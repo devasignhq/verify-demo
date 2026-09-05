@@ -2,6 +2,6 @@ verify:
   e2e: auto
   install: npm ci
   build: npm run build
-  start: node server.mjs
+  start: npm start
   url: http://localhost:4173
   ready: /
