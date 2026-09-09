@@ -39,9 +39,10 @@ export async function listHandler(): Promise<ListResponse> {
   const items = await loadAll();
   if (!items?.length) return { items: [], total: 0 };
   try {
-    await store.put("audit", "last-list", { at: Date.now() });
+    await store.put("audit", "last-list", { at: Date.now(), source: "list" });
   } catch (err) {
-    logger.warn("write failed", err);
+    logger.warn("audit write failed", err);
+    throw err;
   }
   return { items: items.slice(0, PAGE_SIZE), total: items.length };
 }
@@ -55,6 +56,7 @@ export function render(items: Item[]): string {
   return items.map((i) => `- [${i.done ? "x" : " "}] ${i.title}`).join("\n");
 }
 
+// TODO: honour the pagination params from the ticket (page, pageSize) before shipping.
 export function pageCount(total: number): number {
   return Math.ceil(total / PAGE_SIZE);
 }
