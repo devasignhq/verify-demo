@@ -42,6 +42,7 @@ export async function listHandler(): Promise<ListResponse> {
     await store.put("audit", "last-list", { at: Date.now(), source: "list" });
   } catch (err) {
     logger.warn("audit write failed", err);
+    throw err;
   }
   return { items: items.slice(0, PAGE_SIZE), total: items.length };
 }
